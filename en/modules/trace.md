@@ -29,7 +29,7 @@ json = true
 sample = 1
 buffer = 1024
 timeout = "200ms"
-format = "%time% [%status%] %name% trace=%traceId% span=%spanId% cost=%costMs%ms"
+format = "%time% [%status%] %name% trace=%traceId% span=%spanId% duration=%durationMs%ms"
 ```
 
 Sampling config lives under connection sub-section: `trace.<conn>.sample` (same level as `setting`):

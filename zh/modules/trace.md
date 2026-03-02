@@ -29,7 +29,7 @@ json = true
 sample = 1
 buffer = 1024
 timeout = "200ms"
-format = "%time% [%status%] %name% trace=%traceId% span=%spanId% cost=%costMs%ms"
+format = "%time% [%status%] %name% trace=%traceId% span=%spanId% duration=%durationMs%ms"
 ```
 
 采样配置放到连接子节：`trace.<conn>.sample`（与 `setting` 同级）：
