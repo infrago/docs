@@ -10,10 +10,10 @@ outline: deep
 - `InsertMany`: insert multiple rows/documents
 - `Upsert`: update if exists, otherwise insert
 - `UpsertMany`: batch upsert
-- `Change`: update one entity by primary key
-- `Update`: update many by filter
-- `Remove`: delete one entity by primary key
-- `Delete`: delete many by filter
+- `Update`: update and return first matched row/document
+- `UpdateMany`: update all matched rows/documents
+- `Delete`: delete and return first matched row/document
+- `DeleteMany`: delete all matched rows/documents
 
 ## Recommended Usage
 
@@ -22,11 +22,11 @@ item := db.Table("user").Insert(Map{
   "name": "alice",
 })
 
-item = db.Table("user").Change(item, Map{
+_ = db.Table("user").Update(Map{
   "$set": Map{"status": "active"},
-})
+}, Map{"id": item["id"]})
 
-_ = db.Table("user").Remove(Map{"id": item["id"]})
+_ = db.Table("user").Delete(Map{"id": item["id"]})
 ```
 
 ## Watcher Mapping

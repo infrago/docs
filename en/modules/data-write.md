@@ -13,10 +13,10 @@ if db.Error() != nil {
   return
 }
 
-_ = db.Table("user").Change(old, Map{
+_ = db.Table("user").Update(Map{
   "$set": Map{"status": "active"},
   "$inc": Map{"version": 1},
-})
+}, Map{"id": old["id"]})
 if db.Error() != nil {
   // handle
 }
@@ -25,7 +25,7 @@ if db.Error() != nil {
 Single vs many update/delete:
 
 ```go
-// Update: only first matched row (default by primary key ASC when no $sort)
+// Update: returns first matched row after update (default by primary key ASC when no $sort)
 one := db.Table("user").Update(Map{
   "$set": Map{"status": "active"},
 }, Map{"status": "pending"})
@@ -35,7 +35,7 @@ many := db.Table("user").UpdateMany(Map{
   "$set": Map{"status": "active"},
 }, Map{"status": "pending"})
 
-// Delete: only first matched row
+// Delete: returns deleted first matched row
 delOne := db.Table("user").Delete(Map{"status": "inactive"})
 
 // DeleteMany: all matched rows

@@ -23,22 +23,22 @@ if db.Error() != nil {
   return
 }
 
-newItem := db.Table("user").Change(old, base.Map{
+changed := db.Table("user").Update(base.Map{
   "$set": base.Map{"status": "active"},
   "$inc": base.Map{"version": 1},
   "$addToSet": base.Map{"tags": []string{"go", "backend"}},
   "$setPath": base.Map{"profile.nickname": "alice"},
-})
+}, base.Map{"id": old["id"]})
 if db.Error() != nil {
   // handle
 }
-_ = newItem
+_ = changed
 ```
 
 单条与批量更新/删除：
 
 ```go
-// Update：只更新命中的第一条（未传 $sort 时按主键升序）
+// Update：更新并返回命中的第一条（未传 $sort 时按主键升序）
 one := db.Table("user").Update(base.Map{
   "$set": base.Map{"status": "active"},
 }, base.Map{"status": "pending"})
@@ -48,7 +48,7 @@ many := db.Table("user").UpdateMany(base.Map{
   "$set": base.Map{"status": "active"},
 }, base.Map{"status": "pending"})
 
-// Delete：只删除命中的第一条
+// Delete：删除并返回命中的第一条
 delOne := db.Table("user").Delete(base.Map{"status": "inactive"})
 
 // DeleteMany：删除全部命中

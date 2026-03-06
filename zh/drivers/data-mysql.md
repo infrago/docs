@@ -40,7 +40,7 @@ cache = { enable = true, ttl = "3s" }
 ## 示例
 
 ```go
-_, _ = data.Base().Table("user").Update(Map{
+_ = data.Base().Table("user").Update(Map{
     "$setPath": Map{
         "profile.nickname": "alice",
     },

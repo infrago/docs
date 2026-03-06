@@ -10,10 +10,10 @@ outline: deep
 - `InsertMany`: 批量新增
 - `Upsert`: 存在即更新，不存在则新增
 - `UpsertMany`: 批量 upsert
-- `Change`: 按实体主键更新单条
-- `Update`: 按条件批量更新
-- `Remove`: 按实体主键删除单条
-- `Delete`: 按条件批量删除
+- `Update`: 按条件更新并返回命中的第一条
+- `UpdateMany`: 按条件更新全部命中
+- `Delete`: 按条件删除并返回命中的第一条
+- `DeleteMany`: 按条件删除全部命中
 
 ## 推荐使用
 
@@ -22,11 +22,11 @@ item := db.Table("user").Insert(base.Map{
   "name": "alice",
 })
 
-item = db.Table("user").Change(item, base.Map{
+_ = db.Table("user").Update(base.Map{
   "$set": base.Map{"status": "active"},
-})
+}, base.Map{"id": item["id"]})
 
-_ = db.Table("user").Remove(base.Map{"id": item["id"]})
+_ = db.Table("user").Delete(base.Map{"id": item["id"]})
 ```
 
 ## Watcher 对应关系

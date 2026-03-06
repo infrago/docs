@@ -44,7 +44,14 @@ bucket = "my-bucket"
 - `storage.Download`
 - `storage.Remove`
 - `storage.Browse`
+- `storage.Thumbnail / Preview`
 - `storage.Decode(code)`
+
+## 缩图处理器
+
+- 内置图片缩略图处理器，支持 `jpg/jpeg/png/bmp/gif/webp`
+- 可通过 `infra.Register("ext", storage.Thumbnailer{...})` 注册自定义缩图处理器
+- 可通过 `infra.Register("ext", storage.Previewer{...})` 注册预览处理器
 
 ## 驱动
 
