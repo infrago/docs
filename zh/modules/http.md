@@ -22,6 +22,10 @@ maxage = "24h"
 httponly = true
 static = "asset/static"
 upload = "store/upload"
+
+[http.cross]
+enable = true
+origins = ["https://admin.example.com"]
 ```
 
 常用字段：
@@ -32,6 +36,11 @@ upload = "store/upload"
 - `cookie` `token` `expire` `crypto` `maxage` `httponly`
 - `upload` `static` `defaults`
 - `setting`
+
+跨域只支持实例级配置：
+
+- 默认实例：`[http.cross]`
+- 命名实例：`[http.xxx.cross]`
 
 ## 组件
 

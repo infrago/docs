@@ -16,9 +16,10 @@ driver = "default"
 port = 8080
 shared = "shared"
 
-[web.site.admin]
+[site.admin]
 domain = "admin.example.com"
 static = "asset/admin"
+cross = { enable = true, origins = ["https://console.example.com"] }
 
 [site.api]
 domain = "api.example.com"
@@ -29,7 +30,7 @@ domain = "api.example.com"
 - `web.site` / `web.sites`
 - `site`
 
-支持全局跨域节：`cross`。
+跨域只支持站点级配置：`[site.xxx.cross]` 或 `site.xxx.cross = {...}`。
 
 ## 组件
 
