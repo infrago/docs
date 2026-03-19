@@ -45,7 +45,7 @@ _ = caps
 
 ## 缓存失效同步（多节点）
 
-`data` 会通过内部服务 `_data.cache.invalidate` + `infra.Broadcast` 同步按表失效事件。  
+`data` 会通过内部消息 `_data.cache.invalidate` + `infra.Broadcast` 同步按表失效事件。  
 默认走 BusHook（通常是 `bus` 模块），可替换自定义实现。
 
 ## 数据变更 Watcher

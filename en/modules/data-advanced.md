@@ -29,7 +29,7 @@ _ = rows
 
 ## Cache Invalidation Sync (Multi-node)
 
-`data` syncs table-level cache invalidation via internal service `_data.cache.invalidate`
+`data` syncs table-level cache invalidation via internal message `_data.cache.invalidate`
 and `infra.Broadcast`.  
 It uses BusHook by default (usually `bus` module), and remains replaceable.
 
