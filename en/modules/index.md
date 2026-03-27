@@ -9,5 +9,5 @@ Covered modules:
 - search: `search`
 - data: `data`
 - tracing: `trace`
-- web stack: `http`, `web`, `view`
+- web stack: `http`, `web`, `ws`, `view`
 - file stack: `storage`
