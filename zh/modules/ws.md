@@ -32,6 +32,26 @@ outline: deep
 - `bus` 负责模块与节点之间的消息
 - `ws` 负责节点到客户端之间的实时通道
 
+## Upgrade 接入点
+
+`http/web` 现在不再直接耦合 `ws`。
+
+它们只提供：
+
+- `ctx.Upgrade(names ...string)`
+- `http.Endpoint`
+- `web.Endpoint`
+
+`ws` 模块会在启动时自行注册默认 Upgrade 接管器，因此：
+
+- `ctx.Upgrade()`：优先使用未命名默认 `Endpoint`，没有则走默认 Upgrade 接管器
+- `ctx.Upgrade("custom")`：显式使用自定义接入点
+
+这意味着：
+
+- 你可以继续像以前一样直接用 `ctx.Upgrade()`
+- 也可以注册自己的接入实现，而不改 `http/web` 模块本身
+
 ## 基本模型
 
 ### 连接入口
@@ -42,6 +62,45 @@ infra.Register(".socket", web.Router{
     Name: "socket",
     Action: func(ctx *web.Context) {
         if err := ctx.Upgrade(); err != nil {
+            ctx.Error(infra.Fail.With(err.Error()))
+        }
+    },
+})
+```
+
+### 自定义接入点
+
+```go
+infra.Register("custom", web.Endpoint{
+    Name: "custom",
+    Desc: "自定义 websocket 接入点",
+    Accept: func(ctx *web.Context, socket web.Socket) error {
+        return ws.Accept(ws.AcceptOptions{
+            Conn:       socket,
+            Meta:       ctx.Meta,
+            Name:       ctx.Name,
+            Site:       ctx.Site,
+            Host:       ctx.Host,
+            Domain:     ctx.Domain,
+            RootDomain: ctx.RootDomain,
+            Path:       ctx.Path,
+            Uri:        ctx.Uri,
+            Setting:    ctx.Setting,
+            Params:     ctx.Params,
+            Query:      ctx.Query,
+            Form:       ctx.Form,
+            Value:      ctx.Value,
+            Args:       ctx.Args,
+            Locals:     ctx.Locals,
+        })
+    },
+})
+
+infra.Register(".socket.custom", web.Router{
+    Uri:  "/socket/custom",
+    Name: "custom socket",
+    Action: func(ctx *web.Context) {
+        if err := ctx.Upgrade("custom"); err != nil {
             ctx.Error(infra.Fail.With(err.Error()))
         }
     },

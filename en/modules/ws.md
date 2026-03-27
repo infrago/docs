@@ -31,6 +31,23 @@ In short:
 - `bus` is for module/node messaging
 - `ws` is for node-to-client realtime delivery
 
+## Upgrade Endpoints
+
+`http/web` no longer directly depends on `ws`.
+
+They now only expose:
+
+- `ctx.Upgrade(names ...string)`
+- `http.Endpoint`
+- `web.Endpoint`
+
+The `ws` module registers its own default upgrade acceptor during startup, so:
+
+- `ctx.Upgrade()` first uses the unnamed default `Endpoint`, and falls back to the default upgrade acceptor
+- `ctx.Upgrade("custom")` explicitly selects a named endpoint
+
+This keeps the old default flow intact while allowing custom upgrade handlers.
+
 ## Basic Model
 
 ### Upgrade Entry
@@ -41,6 +58,45 @@ infra.Register(".socket", web.Router{
     Name: "socket",
     Action: func(ctx *web.Context) {
         if err := ctx.Upgrade(); err != nil {
+            ctx.Error(infra.Fail.With(err.Error()))
+        }
+    },
+})
+```
+
+### Custom Endpoint
+
+```go
+infra.Register("custom", web.Endpoint{
+    Name: "custom",
+    Desc: "custom websocket endpoint",
+    Accept: func(ctx *web.Context, socket web.Socket) error {
+        return ws.Accept(ws.AcceptOptions{
+            Conn:       socket,
+            Meta:       ctx.Meta,
+            Name:       ctx.Name,
+            Site:       ctx.Site,
+            Host:       ctx.Host,
+            Domain:     ctx.Domain,
+            RootDomain: ctx.RootDomain,
+            Path:       ctx.Path,
+            Uri:        ctx.Uri,
+            Setting:    ctx.Setting,
+            Params:     ctx.Params,
+            Query:      ctx.Query,
+            Form:       ctx.Form,
+            Value:      ctx.Value,
+            Args:       ctx.Args,
+            Locals:     ctx.Locals,
+        })
+    },
+})
+
+infra.Register(".socket.custom", web.Router{
+    Uri:  "/socket/custom",
+    Name: "custom socket",
+    Action: func(ctx *web.Context) {
+        if err := ctx.Upgrade("custom"); err != nil {
             ctx.Error(infra.Fail.With(err.Error()))
         }
     },
