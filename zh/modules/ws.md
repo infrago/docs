@@ -304,6 +304,11 @@ ws.Command{
 - `queued`
 - `dropped`
 
+其中：
+
+- `queued` 是当前发送队列深度
+- `dropped` 是累计被丢弃的消息数
+
 如果配置了：
 
 - `observe_log = true`

@@ -303,6 +303,11 @@ This is intended to be exposed through a debug or admin endpoint for frontend co
 - `queued`
 - `dropped`
 
+Where:
+
+- `queued` is the current send queue depth
+- `dropped` is the cumulative number of dropped messages
+
 When configured with:
 
 - `observe_log = true`
