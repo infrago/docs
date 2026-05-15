@@ -58,9 +58,10 @@ _ = rows
 ## Read-only Transaction
 
 ```go
-_ = db.TxReadOnly(func(tx data.DataBase) error {
+_ = db.TxReadOnly(func(tx data.DataBase) base.Res {
   _ = tx.Table("user").Query(Map{"status": "active"})
-  return tx.Error()
+  if tx.Error() != nil { return infra.Fail.With(tx.Error().Error()) }
+  return infra.OK
 })
 ```
 

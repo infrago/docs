@@ -113,21 +113,22 @@ _ = params
 ## 事务
 
 ```go
-_ = db.Tx(func(tx data.DataBase) error {
+_ = db.Tx(func(tx data.DataBase) base.Res {
   _ = tx.Table("wallet").Update(base.Map{"$inc": base.Map{"balance": -100}}, base.Map{"id": 1})
-  if tx.Error() != nil { return tx.Error() }
+  if tx.Error() != nil { return infra.Fail.With(tx.Error().Error()) }
 
   _ = tx.Table("wallet").Update(base.Map{"$inc": base.Map{"balance": 100}}, base.Map{"id": 2})
-  if tx.Error() != nil { return tx.Error() }
+  if tx.Error() != nil { return infra.Fail.With(tx.Error().Error()) }
 
-  return nil
+  return infra.OK
 })
 ```
 
 ```go
-_ = db.TxReadOnly(func(tx data.DataBase) error {
+_ = db.TxReadOnly(func(tx data.DataBase) base.Res {
   _ = tx.Table("user").Query(base.Map{"status": "active"})
-  return tx.Error()
+  if tx.Error() != nil { return infra.Fail.With(tx.Error().Error()) }
+  return infra.OK
 })
 ```
 
