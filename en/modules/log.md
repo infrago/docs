@@ -64,15 +64,17 @@ Also available:
 - `Writew(level, body, fields)`
 - `Levels()`
 - `Stats()`
+- `SetExitFunc(fn)`: replaces the exit function used by `Fatal/Fatalf/Fatalw`, mainly for tests; the returned function restores the previous exit function
 
 `Stats()` returns runtime metrics for backpressure/degradation tuning:
 
 - `queue_len`, `queue_cap`
-- `drop_count`
-- `write_error_count`
-- `queued_count`, `sync_fallback_count`
+- `drop_count`, `last_drop_unix`
+- `write_error_count`, `last_error`
+- `queued_count`, `sync_write_count`, `sync_fallback_count`
 - `flush_count`, `flush_log_count`
 - `last_flush_latency_ms`, `last_dispatch_latency_ms`, `avg_dispatch_latency_ms`
+- `connections`: per log instance metrics, including `queue_len`, `queue_cap`, `overflow`, `queued_count`, `drop_count`, `write_error_count`, `last_error`, `last_write_latency_ms`, `avg_write_latency_ms`
 
 ## Drivers
 

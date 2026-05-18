@@ -61,15 +61,17 @@ compress = true
 - `log.Writew(level, body, fields)`
 - `log.Levels()`
 - `log.Stats()`
+- `log.SetExitFunc(fn)`：替换 `Fatal/Fatalf/Fatalw` 使用的退出函数，主要用于测试；返回值可恢复旧函数
 
 `Stats()` 可用于背压与降级调优，包含：
 
 - `queue_len`、`queue_cap`
-- `drop_count`
-- `write_error_count`
-- `queued_count`、`sync_fallback_count`
+- `drop_count`、`last_drop_unix`
+- `write_error_count`、`last_error`
+- `queued_count`、`sync_write_count`、`sync_fallback_count`
 - `flush_count`、`flush_log_count`
 - `last_flush_latency_ms`、`last_dispatch_latency_ms`、`avg_dispatch_latency_ms`
+- `connections`：按日志实例返回连接级指标，包括 `queue_len`、`queue_cap`、`overflow`、`queued_count`、`drop_count`、`write_error_count`、`last_error`、`last_write_latency_ms`、`avg_write_latency_ms`
 
 ## 驱动
 

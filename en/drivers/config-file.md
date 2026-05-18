@@ -1,11 +1,18 @@
 # config-file
 
-Driver page for this module integration.
+Reads local configuration files into a runtime `Map`.
 
-## Typical content
+## Driver
 
-- target middleware and connection model
-- common keys under module `setting`
-- operational notes (timeouts, retries, consistency)
+- `file`
 
-See `/en/modules/` for module-level APIs and flow.
+## Parameters
+
+- `file` / `path` / `config`: configuration file path
+- `format`: `toml`, `json`, or `yaml`; when omitted, the driver detects by extension/content
+
+## Example
+
+```bash
+./app --driver=file --file=config.toml
+```
