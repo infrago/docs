@@ -8,6 +8,8 @@ outline: deep
 
 NATS 队列驱动，支持普通 NATS 与 JetStream，支持延迟和重试。
 
+JetStream 驱动使用 durable consumer，并会从积压消息开始投递，适合需要持久队列语义的场景。
+
 ## 驱动名
 
 - `nats`

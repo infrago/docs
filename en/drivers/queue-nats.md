@@ -1,11 +1,18 @@
 # queue-nats
 
-Driver page for this module integration.
+NATS queue drivers. Supports both core NATS and JetStream.
 
-## Typical content
+JetStream uses durable consumers and starts with accumulated messages, which is the preferred mode when persistent queue semantics are required.
 
-- target middleware and connection model
-- common keys under module `setting`
-- operational notes (timeouts, retries, consistency)
+## Drivers
 
-See `/en/modules/` for module-level APIs and flow.
+- `nats`
+- `natsjs` / `nats-js` / `jetstream`
+
+## Settings
+
+- `url` / `server`
+- `token`
+- `user` / `username`
+- `pass` / `password`
+- `stream` for JetStream, default `INFRAGOQ`

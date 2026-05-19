@@ -39,6 +39,8 @@ database = 0
 - `Filter`
 - `Handler`
 
+`Retry` 表示最多重试次数对应的延迟序列。超过序列长度后，`Context.Final()` 为 `true`，模块不会继续重新投递。
+
 ## 对外 API
 
 - `queue.Publish / PublishTo`

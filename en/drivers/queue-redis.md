@@ -1,11 +1,15 @@
 # queue-redis
 
-Driver page for this module integration.
+Redis-backed queue driver using Redis lists.
 
-## Typical content
+Messages are moved to `{queue}:processing` before execution and removed after successful handling or successful retry scheduling. If a worker crashes while handling a message, the message remains in Redis and is restored to the main queue when the driver starts.
 
-- target middleware and connection model
-- common keys under module `setting`
-- operational notes (timeouts, retries, consistency)
+## Driver
 
-See `/en/modules/` for module-level APIs and flow.
+- `redis`
+
+## Settings
+
+- `addr`, or `server` / `host` + `port`
+- `username` / `password`
+- `database`

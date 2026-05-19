@@ -170,6 +170,12 @@ infra.Register("demo.echoed", ws.Command{
 _ = ctx.Answer("demo.notice", nil, ctx.Result())
 ```
 
+补充语义：
+
+- `Send` Hook 可以读取并修改 `ctx.Output`，最终写出修改后的字节内容
+- `Close` Hook 对同一个 session 只触发一次
+- Hook / Handler 内部 panic 会被模块捕获并记录，不会向外打断连接循环
+
 ## Session / User / Group
 
 `ws` 内部维护：
@@ -265,6 +271,18 @@ ws.Command{
 - `high`：优先保留，默认按 `block`
 - `normal`：走模块默认策略
 - `low`：高压时自动丢弃，默认按 `drop`
+
+## 节点间分发
+
+`ws` 内部通过 `_ws.dispatch` 做节点间分发，并严格校验：
+
+- `op` 必须是 `push` / `push_user` / `broadcast` / `groupcast`
+- `msg` 不能为空
+- `push` 必须带 `sid`
+- `push_user` 必须带 `uid`
+- `groupcast` 必须带 `gid`
+
+跨节点 `push sid` 时，如果当前节点没有这个 session，会按 no-op 处理并返回成功。
 
 ## 协议导出
 
