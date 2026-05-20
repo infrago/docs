@@ -17,7 +17,7 @@ File driver for `log`.
 - `maxage`: delete rotated files older than duration (e.g. `7d`, `72h`)
 - `compress`: compress rotated files to `.gz` (async)
 - `close_timeout`: maximum time to wait for async compression during close (e.g. `5s`; default waits without a timeout)
-- `flush_interval`: delayed flush interval; by default every batch is flushed immediately, and when set data is still forced out on close/rotate
+- `flush_interval`: delayed flush interval; by default every batch is flushed immediately, and when set a timer flushes data even without another write; close/rotate still force a flush
 - `cleanup_interval`: rate limit for rotated-file cleanup scans; by default every rotation scans, and close still forces cleanup
 - per-level file: `debug/info/trace/notice/warning/error/panic/fatal`
   - value can be a file path, e.g. `error = "error/error.log"`

@@ -43,6 +43,7 @@ compress = true
 - `level` / `levels`
 - `json`
 - `sample`（`0~1`）
+- `unsafe_fields`：跳过结构化字段拷贝的高性能模式；仅在确认调用方不会在写入后修改 `fields` 时启用
 - `buffer` / `batch` / `timeout`
 - `overflow`：`block`（默认）/ `drop` / `drop_newest` / `drop_oldest`
 - `drop`：`old`（默认）/ `new`（仅在 `overflow = "drop"` 时生效）
@@ -62,6 +63,8 @@ compress = true
 - `log.Levels()`
 - `log.Stats()`
 - `log.SetExitFunc(fn)`：替换 `Fatal/Fatalf/Fatalw` 使用的退出函数，主要用于测试；返回值可恢复旧函数
+
+高频路径建议优先使用 `*f` 或 `*w` 形式，`Info(args...)` 这类灵活参数会做格式串识别；模块会缓存识别结果以降低重复格式的开销。
 
 `Stats()` 可用于背压与降级调优，包含：
 

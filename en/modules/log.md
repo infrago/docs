@@ -41,6 +41,7 @@ Common fields:
 - `level` or `levels`
 - `json`
 - `sample` (`0~1`)
+- `unsafe_fields`: high-throughput mode that skips structured-field cloning; enable only when callers will not mutate `fields` after logging
 - `buffer` / `batch` / `timeout`
 - `overflow`: `block` (default) / `drop` / `drop_newest` / `drop_oldest`
 - `drop`: `old` (default) / `new` (used when `overflow = "drop"`)
@@ -65,6 +66,8 @@ Also available:
 - `Levels()`
 - `Stats()`
 - `SetExitFunc(fn)`: replaces the exit function used by `Fatal/Fatalf/Fatalw`, mainly for tests; the returned function restores the previous exit function
+
+For high-throughput paths, prefer `*f` or `*w`. Flexible calls such as `Info(args...)` still detect printf-style formats, and the module caches repeated format analysis.
 
 `Stats()` returns runtime metrics for backpressure/degradation tuning:
 

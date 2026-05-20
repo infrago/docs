@@ -1,11 +1,19 @@
 # log-greptime
 
-Driver page for this module integration.
+GreptimeDB log driver using the ingester protocol.
 
-## Typical content
+## Setting
 
-- target middleware and connection model
-- common keys under module `setting`
-- operational notes (timeouts, retries, consistency)
+- `host` / `server`
+- `port` (default `4001`)
+- `username` / `user`
+- `password` / `pass`
+- `database` / `db` (default `public`)
+- `table` (default `logs`)
+- `timeout` (default `5s`)
+- `insecure` (default `true`)
+- `tls` (inverse of `insecure`)
 
-See `/en/modules/` for module-level APIs and flow.
+## Fields
+
+Structured `fields` are written to the Greptime `fields` string column. Empty fields use `{}`; primitive scalar fields use a lighter encoder. If JSON is already prepared, pass a single field `{"_json": "..."}` or `{"__json": "..."}` and the driver will validate and write it directly.

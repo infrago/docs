@@ -24,6 +24,10 @@ GreptimeDB 日志驱动（ingester 协议）。
 - `insecure`（默认 `true`）
 - `tls`（与 `insecure` 互补）
 
+## 字段编码
+
+`fields` 会写入 Greptime 的 `fields` 字符串列。空字段使用 `{}`；基础标量字段会走轻量编码；如果调用方已经准备好 JSON，可传入单字段 `{"_json": "..."}` 或 `{"__json": "..."}`，驱动会在校验 JSON 合法后直接写入。
+
 ## 示例
 
 ```toml
